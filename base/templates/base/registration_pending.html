@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Activation Pending</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px 32px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      max-width: 480px;
+      width: 90%;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .card h2 {
+      margin: 0 0 16px;
+      font-size: 26px;
+      color: #2c3e50;
+    }
+
+    .card p {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .highlight {
+      font-weight: 600;
+      color: #2980b9;
+    }
+
+    .resend-link {
+      font-weight: 600;
+      color: #e67e22;
+      text-decoration: none;
+      position: relative;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: none; /* اول کار مخفی */
+    }
+
+    .resend-link::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: #e67e22;
+      transition: width 0.3s ease;
+    }
+
+    .resend-link:hover {
+      color: #d35400;
+    }
+
+    .resend-link:hover::after {
+      width: 100%;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card img {
+      width: 80px;
+      margin-bottom: 20px;
+    }
+
+    #timer {
+      font-size: 14px;
+      color: #888;
+      margin-left: 8px;
+    }
+
+    #notification {
+      display: none;
+      margin-top: 16px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      color: #fff;
+      background-color: #27ae60;
+      animation: fadeIn 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" alt="Email Icon">
+    <h2>Almost there!</h2>
+    <p>
+      An activation link has been sent to 
+      <span class="highlight">{{ email }}</span>.  
+      Please check your inbox to activate your account.
+    </p>
+
+    <p>
+      <span id="timer"></span>
+      <a href="#" id="resendLink" class="resend-link">Resend</a>
+    </p>
+
+    <div id="notification">✅ Email resent successfully!</div>
+  </div>
+
+  <script>
+    let resendLink = document.getElementById("resendLink");
+    let timerSpan = document.getElementById("timer");
+    let notification = document.getElementById("notification");
+    let cooldown = 60; // ثانیه
+
+    function startCooldown() {
+      resendLink.style.display = "none"; // مخفی بشه
+      timerSpan.textContent = `resend after ${cooldown}s`;
+
+      let interval = setInterval(() => {
+        cooldown--;
+        timerSpan.textContent = `resend after ${cooldown}s`;
+        if (cooldown <= 0) {
+          clearInterval(interval);
+          timerSpan.textContent = "";
+          resendLink.style.display = "inline-block"; // حالا نشون داده بشه
+          cooldown = 60; 
+        }
+      }, 1000);
+    }
+
+    // شروع شمارشگر به محض باز شدن صفحه
+    window.onload = function() {
+      startCooldown();
+    };
+
+    resendLink.addEventListener("click", function (e) {
+      e.preventDefault(); // جلوگیری از رفرش/ریدایرکت
+
+      // نمایش نوتیف
+      notification.style.display = "block";
+      setTimeout(() => {
+        notification.style.display = "none";
+      }, 4000);
+
+      // دوباره شمارشگر شروع بشه
+      startCooldown();
+    });
+  </script>
+</body>
+</html>

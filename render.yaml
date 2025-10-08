@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: my-django-app
+    env: python
+    repo: https://github.com/username/repo
+    branch: main
+    buildCommand: bash build.sh
+    startCommand: gunicorn myproject.wsgi --log-file -
+    envVars:
+      - key: SECRET_KEY
+        value: your-secret-key
+      - key: DEBUG
+        value: "False"
+      - key: DATABASE_URL
+        fromDatabase: my-django-db
+databases:
+  - name: my-django-db
+    databaseName: mydbname
+    plan: starter

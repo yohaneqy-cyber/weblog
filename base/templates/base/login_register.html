@@ -1,33 +1,119 @@
 {% extends 'main.html' %}
 
 {% block content %}
-{% if page == 'login' %}
-<div>
-    <form method="POST" action="">
-        {% csrf_token %}
-        <label>username:</label>
-        <input type="text" name="username" placeholder="Enter Username" />
-        <label>password:</label>
-        <input type="password" name="password" placeholder="Enter password" />
-        
-        <input type="submit" value="submit">
+<main class="auth layout">
+  <div class="container">
+    <div class="layout__box">
+      <div class="layout__boxHeader">
+        <div class="layout__boxTitle">
+          <h3>{% if page == 'login' %}Login{% else %}Register{% endif %}</h3>
+        </div>
+      </div>
+      <div class="layout__body">
+        <h2 class="auth__tagline">Find your study partner</h2>
 
-    </form>
-    <p>have not signed up yet?</p>
-    <a href="{% url 'register'%}">Sign up</a>
-</div>
+        <form class="form" action="" method="POST" novalidate>
+          {% csrf_token %}
 
-{% else %}
+          {% if page == 'login' %}
+            <!-- Email -->
+            <div class="form__group">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="myfake@gmail.com"
+                     required value="{{ email_value }}">
+              {% if field_errors.email %}
+                <div class="input-error">{{ field_errors.email }}</div>
+              {% endif %}
+            </div>
 
-<div>
-    <form method="POST" action="">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input type="submit" value="register"/>
-    </form>
-    <p>already signed up yet?</p>
-    <a href="{% url 'login'%}">login</a>
-</div>
-{% endif %}
+            <!-- Password -->
+            <div class="form__group">
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password"
+                     placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" required>
+              {% if field_errors.password %}
+                <div class="input-error">{{ field_errors.password }}</div>
+              {% endif %}
+            </div>
 
+            <div style="display: flex; justify-content: center; margin-top: 20px;">
+              <button class="btn btn--main" type="submit">Login</button>
+            </div>
+
+            <!-- Forgot Password link -->
+            <div class="auth__action" style="margin-top: 12px;">
+              <a href="{% url 'forgot_password' %}" class="btn btn--link">Forgot Password?</a>
+            </div>
+
+            <div class="auth__action">
+              <p>Haven't signed up yet?</p>
+              <a href="{% url 'register' %}" class="btn btn--link">Sign Up</a>
+            </div>
+
+          {% else %}
+            {% for field in form %}
+              <div class="form__group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% for error in field.errors %}
+                  <div class="input-error">{{ error }}</div>
+                {% endfor %}
+              </div>
+            {% endfor %}
+
+            {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+                <div class="input-error">{{ error }}</div>
+              {% endfor %}
+            {% endif %}
+
+            <div style="display: flex; justify-content: center; margin-top: 20px;">
+              <button class="btn btn--main" type="submit">Register</button>
+            </div>
+
+            <div class="auth__action">
+              <p>Already signed up?</p>
+              <a href="{% url 'login' %}" class="btn btn--link">Login</a>
+            </div>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<style>
+.input-error {
+  color: #f44336;
+  font-size: 14px;
+  margin-top: 4px;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease-in-out;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.input-error.fade-out {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const errors = document.querySelectorAll(".input-error");
+  if (errors.length > 0) {
+    setTimeout(() => {
+      errors.forEach(err => {
+        err.classList.add("fade-out");
+        setTimeout(() => err.remove(), 600);
+      });
+    }, 4100);
+  }
+});
+</script>
 {% endblock content %}

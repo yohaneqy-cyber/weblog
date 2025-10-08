@@ -1,20 +1,37 @@
-<div>
-    {% for room in rooms %}
-        <div>
-            {% if request.user == room.host %}
-                <a href="{% url 'update-room' room.id %}">Edit</a>
-                <a href="{% url 'delete-room' room.id %}">Delete</a>
-            {% endif %}
-            
-            {% if room.host %}
-                <a href="{% url 'user-profile' room.host.id %}">@{{ room.host.username }}</a>
-            {% else %}
-                <span>No Host</span>   
-            {% endif %}
-            
-            <h5>{{ room.id }} -- <a href="{% url 'room' room.id %}">{{ room.name }}</a></h5>
-            <small>{{ room.topic.name }}</small>
-            <hr>
-        </div>
-    {% endfor %}
-</div>
+{% for room in rooms %}
+<div class="roomListRoom">
+    <div class="roomListRoom__header">
+      {% if room.host %}
+        <a href="{% url 'user-profile' room.host.id %}" class="roomListRoom__author">
+          <div class="avatar avatar--small active">
+            <img src="{{room.host.avatar.url}}" />
+          </div>
+          <span>@{{ room.host.name }}</span>
+        </a>
+      {% else %}
+        <span>No Host</span>
+      {% endif %}
+      <div class="roomListRoom__actions">
+        <span>{{ room.created|timesince }} ago</span>
+      </div>
+    </div>
+    <div class="roomListRoom__content">
+      {% if room.host %}
+        <a href="{% url 'room' room.id %}">{{ room.name }}</a>
+      {% else %}
+        <span>{{ room.name }}</span>
+      {% endif %}
+    </div>
+    <div class="roomListRoom__meta">
+      {% if room.host %}
+        <a href="{% url 'room' room.id %}" class="roomListRoom__author">
+          <!-- SVG code here -->
+          {{ room.participants.all.count }} Joined
+        </a>
+      {% else %}
+        <span>No Host</span>
+      {% endif %}
+      <p class="roomListRoom__topic">{{ room.topic.name }}</p>
+    </div>
+  </div>
+{% endfor %}

@@ -1,12 +1,169 @@
 {% extends 'main.html' %}
 
 {% block content %}
+<main class="layout">
+    <div class="container">
+        <!-- Delete Modal -->
+        <div id="deleteModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <h3 class="modal-title">Confirm Deletion</h3>
+                <p class="modal-text">Are you sure you want to delete "{{ obj }}"?</p>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-buttons">
+                        <button type="button" class="modal-cancel-btn">Cancel</button>
+                        <button type="submit" class="modal-confirm-btn">Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
 
-<form  method="POST" action="">
-    {% csrf_token %}
-    <p>are you sure about delete "{{obj}}"?</p>
-    <a href="{{ request.META.HTTP_REFERER }}">Go back</a>
-    <input type="submit" value="Confirm" />
-</form>
+<!-- Modal Styles -->
+<style>
+/* Overlay */
+.modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Modal box */
+.modal-content {
+    background-color: #ff0c0cff;
+    border-radius: 14px;
+    max-width: 450px;
+    width: 90%;
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    transform: translateY(-30px);
+    transition: transform 0.25s ease;
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
+}
+
+/* Close button */
+.modal-close {
+    position: absolute;
+    top: 14px; right: 18px;
+    font-size: 26px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+.modal-close:hover {
+    color: #000;
+}
+
+/* Title & text */
+.modal-title {
+    font-size: 22px;
+    margin-bottom: 12px;
+    color: #222;
+}
+.modal-text {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 24px;
+}
+
+/* Buttons */
+.modal-buttons {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+}
+.modal-cancel-btn, .modal-confirm-btn {
+    flex: 1 1 0;
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.modal-cancel-btn {
+    background: #f1f1f1;
+    color: #333;
+}
+.modal-cancel-btn:hover {
+    background: #e0e0e0;
+}
+.modal-confirm-btn {
+    background: #e53935;
+    color: #fff;
+}
+.modal-confirm-btn:hover {
+    background: #c62828;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+    .modal-content {
+        width: 92%;
+        padding: 20px 16px;
+    }
+    .modal-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+</style>
+
+<!-- Modal Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const modal = document.getElementById("deleteModal");
+    const closeBtn = modal.querySelector(".modal-close");
+    const cancelBtn = modal.querySelector(".modal-cancel-btn");
+    const openButtons = document.querySelectorAll(".open-delete-modal-btn");
+    const modalText = modal.querySelector(".modal-text");
+
+    function openModal(text, actionUrl) {
+        modalText.textContent = text;
+        modal.querySelector("form").action = actionUrl;
+        modal.classList.add("show");
+    }
+
+    function closeModal() {
+        modal.classList.remove("show");
+    }
+
+    closeBtn.addEventListener("click", closeModal);
+    cancelBtn.addEventListener("click", closeModal);
+    window.addEventListener("click", (e) => {
+        if(e.target === modal) closeModal();
+    });
+
+    openButtons.forEach(btn => {
+        btn.addEventListener("click", function(e) {
+            e.preventDefault();
+            const objId = this.getAttribute("data-obj");
+            openModal(`Are you sure you want to delete message #${objId}?`, `/delete-message/${objId}/`);
+        });
+    });
+});
+</script>
 
 {% endblock content %}
