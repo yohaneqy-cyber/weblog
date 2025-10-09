@@ -155,7 +155,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 DEBUG = False
 SECRET_KEY = os.environ.get('SECRET_KEY', 'dummy-secret-for-dev')
 
-ALLOWED_HOSTS = ['*'] 
+ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 
 
 STATIC_URL = '/static/'
