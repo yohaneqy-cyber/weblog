@@ -129,13 +129,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL = '/images/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 STATICFILES_DIRS  = [
     BASE_DIR / 'static'
 ]
 
-MEDIA_ROOT = BASE_DIR / 'static/images'
 
 # STATIC_ROOT =
 
@@ -162,7 +163,6 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'dummy-secret-for-dev')
 ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # جایی که collectstatic جمع می‌کند
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
