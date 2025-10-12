@@ -40,8 +40,18 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',          
     'rest_framework',
     "corsheaders",
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# مقادیر رو از داشبورد Cloudinary خودت جایگزین کن
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'your_cloud_name',
+    'API_KEY': 'your_api_key',
+    'API_SECRET': 'your_api_secret',
+}
 AUTH_USER_MODEL = 'base.User'
 
 MIDDLEWARE = [
@@ -129,10 +139,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_ROOT = BASE_DIR / 'static'
-MEDIA_URL = '/static/'
-
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # STATIC_ROOT =
 
