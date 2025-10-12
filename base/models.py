@@ -24,7 +24,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=200, null=True)
     bio = models.TextField(null=True, blank=True)
-    avatar = models.ImageField(null=True, default="avatar.svg")
+    avatar = models.ImageField(upload_to='images/', default='avatar.svg')
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
