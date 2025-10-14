@@ -48,9 +48,9 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # مقادیر رو از داشبورد Cloudinary خودت جایگزین کن
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'your_cloud_name',
-    'API_KEY': 'your_api_key',
-    'API_SECRET': 'your_api_secret',
+    'CLOUD_NAME': 'dtkhztv7j',
+    'API_KEY': '574187347779164',
+    'API_SECRET': 'K_ttkGw47f5LO59hA32nk4XFJkI',
 }
 AUTH_USER_MODEL = 'base.User'
 
