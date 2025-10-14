@@ -153,18 +153,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "avjj8130@gmail.com"
-EMAIL_HOST_PASSWORD = "cqyy cuyw ionv rtwi"
+
+EMAIL_HOST_USER = 'avjj8130@gmail.com'
+EMAIL_HOST_PASSWORD = 'gara ootb bwtx soub' 
+
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-DEBUG = False
-SECRET_KEY = os.environ.get('SECRET_KEY', 'dummy-secret-for-dev')
-
-ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
