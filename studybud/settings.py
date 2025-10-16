@@ -201,12 +201,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-ALLOWED_HOSTS = [
-    'tododo-aim2.onrender.com',      
-    'localhost',
-    '127.0.0.1',
-    'testserver',
-]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'weblog-2.onrender.com']
 
 DEBUG = True
 
